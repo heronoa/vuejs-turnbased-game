@@ -26,7 +26,7 @@
             />
           </div>
         </div>
-        <div class="flex flex-col gap-4 justify-between">
+        <div class="flex flex-col gap-4 justify-between min-w-[300px]">
           <div class="flex flex-col gap-4 justify-center items-center">
             <div class="min-h-[20px]">{{ userMsg }}</div>
             <div class="min-h-[20px]">
@@ -40,33 +40,6 @@
               Leave
             </div>
             <div class="min-h-[20px]">{{ opponentMsg }}</div>
-          </div>
-          <div class="flex gap-4 justify-center">
-            <div
-              class="min-w-md py-2 px-4 mt-4 cursor-pointer text-white bg-blue-500 rounded"
-              v-on:click="sendAtk"
-            >
-              Atk
-            </div>
-
-            <div
-              v-on:click="sendDef"
-              class="min-w-md py-2 px-4 mt-4 cursor-pointer text-white bg-blue-500 rounded"
-            >
-              Def
-            </div>
-            <div
-              v-on:click="sendBrk"
-              class="min-w-md py-2 px-4 mt-4 cursor-pointer text-white bg-blue-500 rounded"
-            >
-              Brk
-            </div>
-            <div
-              v-on:click="sendSp"
-              class="min-w-md py-2 px-4 mt-4 cursor-pointer text-white bg-blue-500 rounded"
-            >
-              Sp
-            </div>
           </div>
         </div>
         <div class="flex flex-col gap-4">
@@ -88,6 +61,16 @@
           </div>
         </div>
       </div>
+      <div class="flex gap-4 justify-center w-full flex-wrap">
+        <div
+          class="min-w-md py-2 px-4 mt-4 cursor-pointer text-white bg-blue-500 rounded"
+          v-for="skill in character?.skill"
+          :key="skill.id"
+          v-on:click="() => sendSkill(skill)"
+        >
+          {{ skill.name }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -99,6 +82,7 @@ import { useRouter } from 'vue-router'
 import { useGameStore } from '@/stores/game'
 import { useColyseusStore } from '@/stores/colyseus'
 import type { MyRoomState, PlayerSchema } from '@/types/colyseus'
+import type { Skill } from '@/types/auth'
 
 export default defineComponent({
   setup() {
@@ -178,17 +162,8 @@ export default defineComponent({
       if (success) router.push('/game/dashboard')
     }
 
-    const sendAtk = () => {
-      colyseus.send('atk')
-    }
-    const sendDef = () => {
-      colyseus.send('def')
-    }
-    const sendBrk = () => {
-      colyseus.send('brk')
-    }
-    const sendSp = () => {
-      colyseus.send('sp')
+    const sendSkill = (skill: Skill) => {
+      colyseus.send('action', skill)
     }
 
     return {
@@ -206,10 +181,7 @@ export default defineComponent({
       finalGameOverMsg,
       character,
       leaveMatch,
-      sendAtk,
-      sendDef,
-      sendBrk,
-      sendSp,
+      sendSkill,
     }
   },
 })

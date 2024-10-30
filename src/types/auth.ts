@@ -35,7 +35,7 @@ export interface ICharacter {
   level: number
   levelupExp: number
   heroClass: string
-  skills: Skill[]
+  skill: Skill[]
 }
 
 export interface IUser {
