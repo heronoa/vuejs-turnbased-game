@@ -96,6 +96,7 @@
 import { defineComponent, ref, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 // import { useAuthStore } from '../stores/auth'
+import { useGameStore } from '@/stores/game'
 import { useColyseusStore } from '@/stores/colyseus'
 import type { MyRoomState, PlayerSchema } from '@/types/colyseus'
 
@@ -103,8 +104,11 @@ export default defineComponent({
   setup() {
     const colyseus = useColyseusStore()
     const router = useRouter()
+    const gameStore = useGameStore()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const player = ref<PlayerSchema | undefined | null | any>()
+
+    const character = ref(gameStore.character)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const opponent = ref<PlayerSchema | undefined | null | any>()
     const currentTurn = ref<number | undefined | null>()
@@ -200,6 +204,7 @@ export default defineComponent({
       gameOverMsg,
       roundWinners,
       finalGameOverMsg,
+      character,
       leaveMatch,
       sendAtk,
       sendDef,

@@ -91,7 +91,6 @@ export const useAuthStore = defineStore('auth', {
           if (!response.data.user?.id) {
             console.log('User not found')
             throw Error('User not found')
-            return this.logout()
           }
           this.user = response.data.user
           this.isAuthenticated = true

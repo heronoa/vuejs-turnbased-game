@@ -5,6 +5,7 @@ import { Client, Room } from 'colyseus.js'
 import type Colyseus from 'colyseus.js'
 import { useRouter } from 'vue-router'
 import type { ICharacterInitial, MyRoomState } from '@/types/colyseus'
+import router from '@/router'
 
 export interface ColyseusState {
   client: Client | null
@@ -56,6 +57,7 @@ export const useColyseusStore = defineStore('colyseus', {
       } catch (error) {
         console.log(error)
         console.log('Disconnecting from colyseus server...')
+        router.push('/profile')
 
         return false
       }
@@ -114,6 +116,7 @@ export const useColyseusStore = defineStore('colyseus', {
         })
         .catch(e => {
           console.log('JOIN ERROR', e)
+          router.push('/profile')
         })
 
       if (!room) {
@@ -260,6 +263,7 @@ export const useColyseusStore = defineStore('colyseus', {
         })
         .catch(e => {
           console.log('JOIN ERROR', e)
+          router.push('/profile')
         })
 
       if (!room) {

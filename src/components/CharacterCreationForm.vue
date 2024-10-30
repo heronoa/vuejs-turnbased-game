@@ -46,13 +46,13 @@
         >
           Criar
         </button>
-      </form>
-      <p class="text-center">
-        Não tem uma conta?
-        <router-link to="/signup" class="text-blue-500"
-          >Cadastre-se</router-link
+        <button
+          v-on:click="back"
+          class="w-full py-2 mt-4 text-white bg-blue-500 rounded"
         >
-      </p>
+          Back
+        </button>
+      </form>
     </div>
   </div>
 </template>
@@ -75,7 +75,6 @@ export default defineComponent({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const changeAttributes = (event: any) => {
       const value = event.target.value
-      console.log({ value })
       classAttributes.value =
         InitialAttributesByClass[value as 'warrior' | 'mage' | 'scout']
     }
@@ -100,12 +99,17 @@ export default defineComponent({
       }
     }
 
+    const back = () => {
+      router.push('/profile')
+    }
+
     return {
       name,
       classHero,
       classAttributes,
       changeAttributes,
       onSubmit,
+      back,
     }
   },
 })

@@ -11,6 +11,22 @@ export interface ICharacterAttribute {
   vitality: number
 }
 
+type Effect = 'DAMAGE' | 'STATUS' | 'BUFF'
+
+type SkillType = 'FIRE' | 'WATER' | 'EARTH' | 'AIR' | 'BLUNT' | 'CUT' | 'PIERCE'
+
+export interface Skill {
+  id: string
+  name: string
+  duration?: string
+  effect: Effect
+  baseDamage?: number
+  type: SkillType
+  baseCost: number
+  countdown: number
+  channeling?: number
+}
+
 export interface ICharacter {
   id: string
   name: string
@@ -19,6 +35,7 @@ export interface ICharacter {
   level: number
   levelupExp: number
   heroClass: string
+  skills: Skill[]
 }
 
 export interface IUser {
