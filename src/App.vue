@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div
-      v-if="authStore.loading"
-      class="flex items-center justify-center min-h-screen"
-    >
+    <div v-if="authStore.loading" class="flex items-center justify-center min-h-screen">
       <!-- Indicador de carregamento -->
       <p>Carregando...</p>
     </div>
@@ -13,14 +10,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import { useAuthStore } from './stores/auth'
 
-export default defineComponent({
-  setup() {
-    const authStore = useAuthStore()
-    return { authStore }
-  },
-})
+const authStore = useAuthStore()
 </script>

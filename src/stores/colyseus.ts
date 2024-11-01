@@ -48,7 +48,7 @@ export const useColyseusStore = defineStore('colyseus', {
   actions: {
     async colyseusInit(authToken: string) {
       try {
-        this.client = new Client('ws:localhost:2567')
+        this.client = new Client(import.meta.env.VITE_SOCKET_URL)
         this.client.auth.token = authToken
 
         console.log('Connecting to colyseus server...')
@@ -57,7 +57,7 @@ export const useColyseusStore = defineStore('colyseus', {
       } catch (error) {
         console.log(error)
         console.log('Disconnecting from colyseus server...')
-        router.push('/profile')
+        router.push({ name: 'profile' })
 
         return false
       }
@@ -100,6 +100,7 @@ export const useColyseusStore = defineStore('colyseus', {
           this.gameRoom = room
 
           this.gameOverMsg = null
+          this.finalGameOverMsg = null
 
           this.winner = null
 
@@ -113,7 +114,7 @@ export const useColyseusStore = defineStore('colyseus', {
         })
         .catch(e => {
           console.log('JOIN ERROR', e)
-          router.push('/profile')
+          router.push({ name: 'profile' })
         })
 
       if (!room) {
@@ -260,7 +261,7 @@ export const useColyseusStore = defineStore('colyseus', {
         })
         .catch(e => {
           console.log('JOIN ERROR', e)
-          router.push('/profile')
+          router.push({ name: 'profile' })
         })
 
       if (!room) {
@@ -292,7 +293,7 @@ export const useColyseusStore = defineStore('colyseus', {
       room.onError((code, message) => {
         console.log("couldn't join", room.name, 'code: ', code)
         // const router = useRouter()
-        // router.push('/profile')
+        // router.push({ name: 'profile' })
       })
 
       room.onLeave(code => {

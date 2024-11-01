@@ -54,13 +54,13 @@ const logout = () => {
 }
 
 const createCharacter = () => {
-  router.push('/charactercreation')
+  router.push({ name: 'character creation' })
 }
 
 const selectHero = (id: string) => {
   if (authStore.token) {
     gameStore.selectHero(id)
-    router.push('/game/dashboard')
+    router.push({ name: 'Character Dashboard' })
   }
 }
 const deleteHero = (id: string) => {

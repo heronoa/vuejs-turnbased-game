@@ -1,6 +1,14 @@
 import { Schema, MapSchema } from '@colyseus/schema'
 
+export interface StatusSchema extends Schema {
+  type: string
+  duration: number
+  damage?: number
+  factors?: string
+}
 export interface PlayerSchema extends Schema {
+  status: StatusSchema[]
+
   userId: string
   connected: boolean
   hp: number
@@ -15,6 +23,7 @@ export interface PlayerSchema extends Schema {
   breakSequel: number
   maxBreakSequel: number
   mana: number
+  maxMana: number
   strength: number
   dexterity: number
   vitality: number

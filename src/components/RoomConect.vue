@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useGameStore } from '@/stores/game'
@@ -32,7 +32,7 @@ const clients = ref<any[]>([])
 const loading = ref(true)
 const load = async () => {
   if (!authToken) {
-    return router.push('/login')
+    return router.push({ name: 'login' })
   }
 
   loading.value = true
@@ -66,7 +66,7 @@ const load = async () => {
 const leave = async () => {
   const success = await colyseus.leaveLobby()
 
-  if (success) router.push('/game/dashboard')
+  if (success) router.push({ name: 'Character Dashboard' })
 }
 
 watchEffect(() => {
@@ -77,11 +77,10 @@ watchEffect(() => {
   const matchRoom = colyseus.gameRoom
 
   if (matchRoom?.roomId) {
-    router.push('/game/match')
+    router.push({ name: 'Game Match' })
   }
 })
-
-load()
+onMounted(load)
 
 // const router = useRouter()
 

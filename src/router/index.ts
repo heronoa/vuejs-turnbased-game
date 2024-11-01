@@ -7,7 +7,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'login',
       component: LoginView,
     },
     {
@@ -32,28 +32,33 @@ const router = createRouter({
       component: () => import('../views/CharacterCreationView.vue'),
     },
     {
-      path: '/game/dashboard',
-      name: 'Character Dashboard',
-      meta: {
-        requiresAuth: true,
-      },
-      component: () => import('../views/CharacterDashboardView.vue'),
-    },
-    {
-      path: '/game/queue',
-      name: 'Game Queue',
-      meta: {
-        requiresAuth: true,
-      },
-      component: () => import('../views/QueueView.vue'),
-    },
-    {
-      path: '/game/match',
-      name: 'Game Match',
-      meta: {
-        requiresAuth: true,
-      },
-      component: () => import('../views/MatchView.vue'),
+      path: '/game',
+      children: [
+        {
+          path: 'dashboard',
+          component: () => import('../views/CharacterDashboardView.vue'),
+          name: 'Character Dashboard',
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'queue',
+          component: () => import('../views/QueueView.vue'),
+          name: 'Game Queue',
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'match',
+          name: 'Game Match',
+          meta: {
+            requiresAuth: true,
+          },
+          component: () => import('../views/MatchView.vue'),
+        },
+      ],
     },
     {
       path: '/login',

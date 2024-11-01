@@ -5,7 +5,7 @@ import router from '../router'
 
 // Crie uma instância do Axios com configurações padrão
 const api = axios.create({
-  baseURL: `${'http://localhost:2567'}/api`, // Substitua pela URL da sua API
+  baseURL: `${import.meta.env.VITE_API_URL}/api`, // Substitua pela URL da sua API
   headers: {
     'Content-Type': 'application/json',
   },
@@ -34,7 +34,7 @@ api.interceptors.response.use(
       if (error.response.status === 401) {
         const authStore = useAuthStore()
         authStore.logout()
-        router.push('/login')
+        router.push({ name: 'login' })
       }
     }
     return Promise.reject(error)

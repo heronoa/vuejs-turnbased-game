@@ -35,7 +35,7 @@ const authStore = useAuthStore()
 
 const onSubmit = async () => {
   const success = await authStore.login(email.value, password.value)
-  if (success) router.push('/profile')
+  if (success) router.push({ name: 'profile' })
 }
 
 </script>

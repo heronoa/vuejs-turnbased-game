@@ -88,7 +88,7 @@ const onSubmit = async () => {
     email.value,
     password.value,
   )
-  if (success) router.push('/login')
+  if (success) router.push({ name: 'login' })
   else {
     errorMsg.value = 'Error on sign'
     setTimeout(() => {

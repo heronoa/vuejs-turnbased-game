@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import { useAuthStore } from '../stores/auth'
 import { useAuthStore } from '@/stores/auth'
@@ -75,7 +75,7 @@ const load = async () => {
   loading.value = true
   if (authStore.token) await gameStore.loadUser(authStore.token)
   if (!gameStore) {
-    router.push('/profile')
+    router.push({ name: 'profile' })
   }
   console.log({ test: gameStore.character })
   console.log({ test: gameStore.characterId })
@@ -83,17 +83,17 @@ const load = async () => {
   loading.value = false
 }
 
-load()
+onMounted(load)
 
 const changeHero = () => {
   gameStore.character = null
   gameStore.characterId = null
 
-  router.push('/profile')
+  router.push({ name: 'profile' })
 }
 
 const findBattle = () => {
-  router.push('/game/queue')
+  router.push({ name: 'Game Queue' })
   console.log('findBattle')
 }
 

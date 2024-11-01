@@ -66,7 +66,7 @@ const onSubmit = async () => {
   if (success) {
     try {
       await authStore.loadUser()
-      router.push('/profile')
+      router.push({ name: 'profile' })
     } catch (err) {
       console.log(err)
     }
@@ -74,7 +74,7 @@ const onSubmit = async () => {
 }
 
 const back = () => {
-  router.push('/profile')
+  router.push({ name: 'profile' })
 }
 
 
