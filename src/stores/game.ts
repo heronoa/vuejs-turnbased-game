@@ -19,7 +19,28 @@ export const useGameStore = defineStore('game', {
       localStorage.setItem('cacheCharacter', id)
       this.characterId = id
     },
-
+    async deleteHero(id: string, token: string) {
+      try {
+        const response = await api.delete('/character/delete', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: {
+            characterId: id,
+          },
+        })
+        if (!response.data.character?.id) {
+          console.log('User not found')
+          return this.clear()
+        }
+        this.character = response.data.character
+        return true
+      } catch (error) {
+        console.log('erro no loadUser', error)
+        this.clear()
+        return false
+      }
+    },
     clear() {
       this.characterId = null
       this.character = null

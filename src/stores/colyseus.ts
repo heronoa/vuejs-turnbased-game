@@ -78,13 +78,10 @@ export const useColyseusStore = defineStore('colyseus', {
     },
     async leaveMatch() {
       try {
-        if (this.gameRoom === null) {
-          return
-        }
-
-        await this.gameRoom?.leave(true)
         this.gameState = null
         this.gameRoom = null
+        localStorage.removeItem('reconnectionToken')
+
         return true
       } catch (err) {
         console.log({ err })

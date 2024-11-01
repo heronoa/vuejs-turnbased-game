@@ -4,7 +4,7 @@
       <h2 class="text-2xl font-bold text-center">Procurando Adversário...</h2>
 
       <div class="flex justify-center items-center">
-        Queue: {{ clients.length }}
+        Jogadores na fila: {{ clients.length }}
       </div>
       <button
         v-on:click="leave"

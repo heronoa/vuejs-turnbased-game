@@ -20,11 +20,15 @@
               <span class="font-bold uppercase">{{ char.heroClass }}</span>
               <div
                 v-on:click="() => selectHero(char.id)"
-                class="w-[24px] h-[24px] text-white bg-blue-500 rounded flex justify-center items-center"
+                class="min-w-[24px] py-1 px-4 cursor-pointer text-white bg-blue-500 rounded flex justify-center items-center"
               >
-                <div
-                  class="w-[32px] h-[32px] block text-black cursor-pointer"
-                ></div>
+                Select
+              </div>
+              <div
+                v-on:click="() => deleteHero(char.id)"
+                class="min-w-[24px] py-1 px-4 cursor-pointer text-white bg-red-500 rounded flex justify-center items-center"
+              >
+                Delete
               </div>
             </div>
           </div>
@@ -53,7 +57,6 @@ import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useGameStore } from '@/stores/game'
-import { GiConfirmed } from 'oh-vue-icons/icons'
 
 export default defineComponent({
   setup() {
@@ -80,14 +83,19 @@ export default defineComponent({
         router.push('/game/dashboard')
       }
     }
+    const deleteHero = (id: string) => {
+      if (authStore.token) {
+        gameStore.deleteHero(id, authStore.token)
+        authStore.loadUser()
+      }
+    }
 
     return {
       user,
       createCharacter,
       logout,
       selectHero,
-
-      GiConfirmed,
+      deleteHero,
     }
   },
 })
