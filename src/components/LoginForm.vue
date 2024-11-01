@@ -5,57 +5,37 @@
       <form @submit.prevent="onSubmit">
         <div>
           <label class="block text-sm">Email</label>
-          <input
-            v-model="email"
-            type="email"
-            required
-            class="w-full px-3 py-2 border rounded"
-          />
+          <input v-model="email" type="email" required class="w-full px-3 py-2 border rounded" />
         </div>
         <div>
           <label class="block text-sm">Senha</label>
-          <input
-            v-model="password"
-            type="password"
-            required
-            class="w-full px-3 py-2 border rounded"
-          />
+          <input v-model="password" type="password" required class="w-full px-3 py-2 border rounded" />
         </div>
-        <button
-          type="submit"
-          class="w-full py-2 mt-4 text-white bg-blue-500 rounded"
-        >
+        <button type="submit" class="w-full py-2 mt-4 text-white bg-blue-500 rounded">
           Entrar
         </button>
       </form>
       <p class="text-center">
         Não tem uma conta?
-        <router-link to="/signup" class="text-blue-500"
-          >Cadastre-se</router-link
-        >
+        <router-link to="/signup" class="text-blue-500">Cadastre-se</router-link>
       </p>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 
-export default defineComponent({
-  setup() {
-    const email = ref('')
-    const password = ref('')
-    const router = useRouter()
-    const authStore = useAuthStore()
+const email = ref('')
+const password = ref('')
+const router = useRouter()
+const authStore = useAuthStore()
 
-    const onSubmit = async () => {
-      const success = await authStore.login(email.value, password.value)
-      if (success) router.push('/profile')
-    }
+const onSubmit = async () => {
+  const success = await authStore.login(email.value, password.value)
+  if (success) router.push('/profile')
+}
 
-    return { email, password, onSubmit }
-  },
-})
 </script>

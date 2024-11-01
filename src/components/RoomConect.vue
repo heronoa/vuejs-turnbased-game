@@ -6,91 +6,84 @@
       <div class="flex justify-center items-center">
         Jogadores na fila: {{ clients.length }}
       </div>
-      <button
-        v-on:click="leave"
-        class="w-full py-2 mt-4 text-white bg-blue-500 rounded"
-      >
+      <button v-on:click="leave" class="w-full py-2 mt-4 text-white bg-blue-500 rounded">
         Abandonar
       </button>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watchEffect } from 'vue'
+<script setup lang="ts">
+import { ref, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useGameStore } from '@/stores/game'
 import { useColyseusStore } from '@/stores/colyseus'
-import type { ICharacter } from '@/types/auth'
+// import type { ICharacter } from '@/types/auth'
 
-export default defineComponent({
-  setup() {
-    const authStore = useAuthStore()
-    const colyseus = useColyseusStore()
-    const gameStore = useGameStore()
-    const authToken = authStore.token
-    const router = useRouter()
-    const character = ref<ICharacter | undefined | null>()
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const clients = ref<any[]>([])
-    const loading = ref(true)
-    const load = async () => {
-      if (!authToken) {
-        return router.push('/login')
-      }
+const authStore = useAuthStore()
+const colyseus = useColyseusStore()
+const gameStore = useGameStore()
+const authToken = authStore.token
+const router = useRouter()
+// const character = ref<ICharacter | undefined | null>()
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const clients = ref<any[]>([])
+const loading = ref(true)
+const load = async () => {
+  if (!authToken) {
+    return router.push('/login')
+  }
 
-      loading.value = true
-      const successInit = await colyseus.colyseusInit(authToken)
-      if (successInit)
-        console.log({
-          character: gameStore?.character,
-          userId: authStore?.user?.username,
-        })
-      if (gameStore?.character && authStore?.user?.username) {
-        await colyseus.joinOrCreateLobby({
-          userId: `${authStore.user.username}@${authStore?.user?.email}`,
-          character: {
-            name: gameStore?.character.name,
-            magicka: gameStore?.character.CharacterAttribute.magicka,
-            dexterity: gameStore?.character.CharacterAttribute.dexterity,
-            intelligence: gameStore?.character.CharacterAttribute.intelligence,
-            willpower: gameStore?.character.CharacterAttribute.willpower,
-            strength: gameStore?.character.CharacterAttribute.strength,
-            resistence: gameStore?.character.CharacterAttribute.resistence,
-            vitality: gameStore?.character.CharacterAttribute.vitality,
-            level: gameStore?.character.level,
-            hp: gameStore?.character.CharacterAttribute.hp,
-          },
-        })
-      }
-
-      loading.value = false
-    }
-
-    const leave = async () => {
-      const success = await colyseus.leaveLobby()
-
-      if (success) router.push('/game/dashboard')
-    }
-
-    watchEffect(() => {
-      clients.value = colyseus.clientsOnQueue
+  loading.value = true
+  const successInit = await colyseus.colyseusInit(authToken)
+  if (successInit)
+    console.log({
+      character: gameStore?.character,
+      userId: authStore?.user?.username,
     })
-
-    watchEffect(() => {
-      const matchRoom = colyseus.gameRoom
-
-      if (matchRoom?.roomId) {
-        router.push('/game/match')
-      }
+  if (gameStore?.character && authStore?.user?.username) {
+    await colyseus.joinOrCreateLobby({
+      userId: `${authStore.user.username}@${authStore?.user?.email}`,
+      character: {
+        name: gameStore?.character.name,
+        magicka: gameStore?.character.CharacterAttribute.magicka,
+        dexterity: gameStore?.character.CharacterAttribute.dexterity,
+        intelligence: gameStore?.character.CharacterAttribute.intelligence,
+        willpower: gameStore?.character.CharacterAttribute.willpower,
+        strength: gameStore?.character.CharacterAttribute.strength,
+        resistence: gameStore?.character.CharacterAttribute.resistence,
+        vitality: gameStore?.character.CharacterAttribute.vitality,
+        level: gameStore?.character.level,
+        hp: gameStore?.character.CharacterAttribute.hp,
+      },
     })
+  }
 
-    load()
+  loading.value = false
+}
 
-    // const router = useRouter()
+const leave = async () => {
+  const success = await colyseus.leaveLobby()
 
-    return { character, loading, clients, leave }
-  },
+  if (success) router.push('/game/dashboard')
+}
+
+watchEffect(() => {
+  clients.value = colyseus.clientsOnQueue
 })
+
+watchEffect(() => {
+  const matchRoom = colyseus.gameRoom
+
+  if (matchRoom?.roomId) {
+    router.push('/game/match')
+  }
+})
+
+load()
+
+// const router = useRouter()
+
+
 </script>
