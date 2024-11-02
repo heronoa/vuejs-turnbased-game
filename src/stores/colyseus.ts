@@ -88,6 +88,20 @@ export const useColyseusStore = defineStore('colyseus', {
         return false
       }
     },
+    async leaveUnfinishedMatch() {
+      try {
+        const result = this.gameRoom?.leave(true)
+        if (result) {
+          this.gameState = null
+          this.gameRoom = null
+          localStorage.removeItem('reconnectionToken')
+          return true
+        }
+      } catch (err) {
+        console.log({ err })
+        return false
+      }
+    },
 
     async joinGameReservation(reservation: any) {
       const room = await this.client

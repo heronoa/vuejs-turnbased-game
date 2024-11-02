@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.damage-animation {
+    width: 5px;
+    height: 5px;
+    border-radius: 100%;
+    background-color: red;
+    opacity: .5;
+    animation: anime-damage ease 0.5s infinite;
+}
+
+.damage-animation-portrait {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+@keyframes anime-damage {
+    0% {
+        scale: 1;
+    }
+
+    100% {
+        scale: 25;
+    }
+
+}

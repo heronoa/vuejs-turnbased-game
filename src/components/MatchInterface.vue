@@ -6,7 +6,8 @@
         <h2 class="text-2xl font-bold text-center"> Battle - {{ countdown || 25 }}</h2>
         <div class="flex justify-center items-center">
 
-          <div class="max-w-md py-2 px-4 mt-4 cursor-pointer text-white bg-blue-500 rounded">Run</div>
+          <div v-on:click="runFromBattle" class="max-w-md py-2 px-4 mt-4 cursor-pointer text-white bg-blue-500 rounded">
+            Run</div>
         </div>
         <h4 class="text-center flex justify-center items-center">
           Turn: {{
@@ -17,8 +18,10 @@
         <div v-if="player" class="flex flex-col gap-4 items-end ">
 
           <div class="flex gap-2 ">
-            <div class="bg-lime-500 h-[25px]" v-for="(stats, index) in player.status" :key="index" :value="stats">
-              {{ stats.type }}
+            <div class="flex flex-col gap-2">
+              <div class="bg-lime-500 h-[25px]" v-for="(stats, index) in player.status" :key="index" :value="stats">
+                {{ stats.type }}
+              </div>
             </div>
             <div class="flex flex-col gap-2">
               <div class="flex gap-2 justify-end">
@@ -60,10 +63,17 @@
                 <div v-for="(wins, index) in opponentWins" :key="index" :value="wins"
                   class="w-[10px] h-[10px] bg-green-400"></div>
               </div>
-              <div class="w-[70px] h-[100px] bg-amber-600"></div>
+              <div class="relative">
+                <div class="relative z-1 w-[70px] h-[100px] bg-amber-600"></div>
+                <!-- <div class="absolute z-2 inset-0 damage-animation-portrait">
+                  <div class="relative damage-animation"></div>
+                </div> -->
+              </div>
             </div>
-            <div class="bg-lime-500 h-[25px]" v-for="(stats, index) in opponent.status" :key="index" :value="stats">
-              {{ stats.type }}
+            <div class="flex flex-col gap-2">
+              <div class="bg-lime-500 h-[25px]" v-for="(stats, index) in opponent.status" :key="index" :value="stats">
+                {{ stats.type }}
+              </div>
             </div>
           </div>
           <div>{{ opponent.userId.split('@')[0] }}</div>
@@ -140,6 +150,8 @@ const player = computed(() => {
   return null
 })
 
+
+
 const opponent = computed(() => {
   if (gameState.value && colyseus.userSessionId) {
     const opponentKey = Array.from(gameState.value.players.keys()).find(
@@ -176,6 +188,11 @@ const opponentWins = computed(() => {
   return opWins.filter(win => win.winner === (opponent?.value?.userId || "0"))
 
 })
+
+const runFromBattle = async () => {
+  const success = await colyseus.leaveUnfinishedMatch()
+  if (success) router.push({ name: 'Character Dashboard' })
+}
 
 const leaveMatch = async () => {
   const success = await colyseus.leaveMatch()
