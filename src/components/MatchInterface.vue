@@ -131,7 +131,7 @@ const userMsg = computed(() => {
 
 const opponentMsg = computed(() => {
   if (colyseus?.gameState) {
-    return colyseus?.opponentMsg
+    return colyseus?.enemyMsg
   } return undefined
 })
 

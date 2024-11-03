@@ -1,86 +1,97 @@
 import { defineStore } from 'pinia'
 import api from '../services/api'
 import type { ICharacter } from '@/types/auth'
+import { ref, type Ref } from 'vue'
 
 export interface GameState {
-  character: ICharacter | null
-  characterId: ICharacter['id'] | null
-  loading: boolean
+  character: Ref<ICharacter | null>
+  characterId: Ref<ICharacter['id'] | null>
+  loading: Ref<boolean>
+  loadUser: (token: string) => Promise<boolean | void>
+  clear: () => void
+  deleteHero: (id: string, token: string) => Promise<true | void>
+  selectHero: (id: string) => void
 }
 
-export const useGameStore = defineStore('game', {
-  state: (): GameState => ({
-    characterId: null,
-    character: null,
-    loading: false,
-  }),
-  actions: {
-    selectHero(id: string) {
-      localStorage.setItem('cacheCharacter', id)
-      this.characterId = id
-    },
-    async deleteHero(id: string, token: string) {
+export const useGameStore = defineStore('game', (): GameState => {
+  const characterId = ref<ICharacter['id'] | null>(null)
+  const character = ref<ICharacter | null>(null)
+  const loading = ref<boolean>(false)
+
+  function selectHero(id: string) {
+    localStorage.setItem('cacheCharacter', id)
+    characterId.value = id
+  }
+
+  async function deleteHero(id: string, token: string) {
+    try {
+      const response = await api.delete('/character/delete', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          characterId: id,
+        },
+      })
+      if (!response.data.character?.id) {
+        console.log('User not found')
+        return clear()
+      }
+      character.value = response.data.character
+      return true
+    } catch (error) {
+      console.log('erro no loadUser', error)
+      return clear()
+    }
+  }
+  function clear() {
+    characterId.value = null
+    character.value = null
+  }
+  async function loadUser(token: string) {
+    const cacheCharacter = localStorage.getItem('cacheCharacter')
+    if (cacheCharacter) {
+      console.log({ cacheCharacter })
+      characterId.value = cacheCharacter
+    }
+    if (characterId.value) {
+      console.log({ id: characterId.value })
+
       try {
-        const response = await api.delete('/character/delete', {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const response = await api.post(
+          '/character/search',
+          {
+            characterId: characterId.value,
           },
-          data: {
-            characterId: id,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        })
+        )
         if (!response.data.character?.id) {
           console.log('User not found')
-          return this.clear()
+          return clear()
         }
-        this.character = response.data.character
+        character.value = response.data.character
         return true
       } catch (error) {
         console.log('erro no loadUser', error)
-        this.clear()
+        clear()
         return false
       }
-    },
-    clear() {
-      this.characterId = null
-      this.character = null
-    },
+    }
+    loading.value = false
+    return false
+  }
 
-    async loadUser(token: string) {
-      const cacheCharacter = localStorage.getItem('cacheCharacter')
-      if (cacheCharacter) {
-        console.log({ cacheCharacter })
-        this.characterId = cacheCharacter
-      }
-      if (this.characterId) {
-        console.log({ id: this.characterId })
-
-        try {
-          const response = await api.post(
-            '/character/search',
-            {
-              characterId: this.characterId,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            },
-          )
-          if (!response.data.character?.id) {
-            console.log('User not found')
-            return this.clear()
-          }
-          this.character = response.data.character
-          return true
-        } catch (error) {
-          console.log('erro no loadUser', error)
-          this.clear()
-          return false
-        }
-      }
-      this.loading = false
-      return false
-    },
-  },
+  return {
+    loadUser,
+    clear,
+    character,
+    deleteHero,
+    selectHero,
+    characterId,
+    loading,
+  }
 })
