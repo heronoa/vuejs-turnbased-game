@@ -34,10 +34,10 @@
                     <div v-for="(tile2, index2) in tile1.tilesets" :key="index2" :value="tile2"
                       class="border border-solid border-gray-400 ">
                       <div class="w-[24px] h-[25px] flex justify-center items-center">
-                        <div v-if="index === selectedMovement?.x && index2 === selectedMovement?.y"
+                        <div v-if="index2 === selectedMovement?.x && index === selectedMovement?.y"
                           class="w-[20px] h-[20px] bg-amber-600 truncate"></div>
                         <div v-else-if="tile2.enabled" class="w-[20px] h-[20px] bg-lime-300"
-                          v-on:click="() => handleTileSelect(index, index2)"></div>
+                          v-on:click="() => handleTileSelect(index2, index)"></div>
                         <!-- <div v-else class="w-[20px] h-[20px] bg-slate-500"></div> -->
                         <div v-else-if="tile2.playerId !== ''" class="w-[20px] h-[20px] bg-amber-600 truncate">
                           {{ tile2.playerId }}
@@ -174,7 +174,10 @@
           <div class="min-w-md py-2 px-4 mt-4 cursor-pointer text-white bg-blue-500 rounded"
             v-for="(menuItem, idx) in [{ name: 'Confirm', value: 'confirm' }, { name: 'Back', value: '' }]" :key="idx"
             v-on:click="() => {
+              console.log({ menuItem })
               if (menuItem.value === 'confirm') {
+                console.log(2, { menuItem })
+
                 sendAction();
               }
               menu = ''
@@ -188,7 +191,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import { useAuthStore } from '../stores/auth'
 import { useGameStore } from '@/stores/game'
@@ -203,6 +206,12 @@ const character = ref(gameStore.character)
 const menu = ref<"" | "atk" | "move" | "confirm">("")
 const selectedAction = ref<Skill>()
 const selectedMovement = ref<{ x: number, y: number }>()
+
+onMounted(() => {
+  if (!colyseus.gameRoom?.roomId) {
+    router.push("/profile")
+  }
+})
 
 const handleTileSelect = (x: number, y: number) => {
   if (menu.value === "move") {
@@ -321,7 +330,12 @@ const sendAction = () => {
     return
   }
 
-  colyseus.send('action', { skill: selectedAction, movement: selectedMovement })
+  console.log("Selected")
+
+  colyseus.send('action', { skill: selectedAction.value, movement: selectedMovement.value })
+
+  selectedAction.value = undefined
+  selectedMovement.value = undefined
 }
 
 
