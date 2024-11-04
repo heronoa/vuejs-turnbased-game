@@ -11,6 +11,19 @@ export interface SkillCountdownSchema extends Schema {
   duration: number
   id: string
 }
+
+export interface BattleFieldTileSet extends Schema {
+  enabled: boolean
+  trap: boolean
+  playerId: string
+}
+export interface BattleFieldYSchema extends Schema {
+  tilesets: BattleFieldTileSet[]
+}
+
+export interface BattleFieldSchema extends Schema {
+  map: BattleFieldYSchema[]
+}
 export interface PlayerSchema extends Schema {
   status: StatusSchema[]
   skill_countdown: MapSchema<SkillCountdownSchema>
@@ -63,6 +76,8 @@ export interface MyRoomState extends Schema {
   history: string
   db_id: string
   isRanked: boolean
+
+  battleField: MapSchema<BattleFieldSchema>
 
   players: MapSchema<PlayerSchema>
   actions: MapSchema<ActionSchema>
