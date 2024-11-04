@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import api from '../services/api'
 import type { ICharacter } from '@/types/auth'
 import { ref, type Ref } from 'vue'
+import router from '@/router'
 
 export interface GameState {
   character: Ref<ICharacter | null>
@@ -47,6 +48,7 @@ export const useGameStore = defineStore('game', (): GameState => {
   function clear() {
     characterId.value = null
     character.value = null
+    router.push({ name: 'login' })
   }
   async function loadUser(token: string) {
     const cacheCharacter = localStorage.getItem('cacheCharacter')

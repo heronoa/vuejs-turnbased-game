@@ -90,7 +90,7 @@
       <div class="flex gap-4 justify-center w-full flex-wrap">
         <div class="min-w-md py-2 px-4 mt-4 cursor-pointer text-white bg-blue-500 rounded"
           v-for="skill in character?.skill" :key="skill.id" v-on:click="() => sendSkill(skill)">
-          {{ skill.name }}
+          {{ skill.name }} {{ countdownMap?.get(skill.id) ? ` - ${countdownMap?.get(skill.id)?.duration}` : "" }}
         </div>
       </div>
     </div>
@@ -116,6 +116,10 @@ const gameState = computed(() => {
   console.log({ gameState })
 
   return colyseus.gameState
+})
+
+const countdownMap = computed(() => {
+  return player.value?.skill_countdown
 })
 
 const countdown = computed(() => {

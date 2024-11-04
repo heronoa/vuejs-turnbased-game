@@ -6,8 +6,14 @@ export interface StatusSchema extends Schema {
   damage?: number
   factors?: string
 }
+
+export interface SkillCountdownSchema extends Schema {
+  duration: number
+  id: string
+}
 export interface PlayerSchema extends Schema {
   status: StatusSchema[]
+  skill_countdown: MapSchema<SkillCountdownSchema>
 
   userId: string
   connected: boolean

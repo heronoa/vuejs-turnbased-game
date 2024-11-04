@@ -74,7 +74,7 @@ const loading = ref(true)
 const load = async () => {
   loading.value = true
   if (authStore.token) await gameStore.loadUser(authStore.token)
-  if (!gameStore) {
+  if (!gameStore.character) {
     router.push({ name: 'profile' })
   }
   console.log({ test: gameStore.character })
