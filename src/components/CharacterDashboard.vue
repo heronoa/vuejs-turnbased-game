@@ -7,6 +7,9 @@
       </div>
       <div v-if="character?.name">
         <div class="flex flex-col justify-center items-center">
+          <div class="relative z-1 w-[70px] h-[70px] bg-amber-600 rounded-full overflow-hidden ">
+            <img v-bind:src="`/src/assets/characters/${character?.heroClass || ' warrior'}.webp`" />
+          </div>
           <label class="border-b border-solid border-gray-200 w-full text-center font-bold uppercase">
             {{ character?.name }} - {{ character?.heroClass }}
           </label>
