@@ -73,13 +73,11 @@ const character = ref<ICharacter | undefined | null>()
 const loading = ref(true)
 const load = async () => {
   loading.value = true
-  if (!authStore.token) router.push({ name: "login" })
+  if (!authStore.token || !authStore.isAuthenticated) router.push({ name: "login" })
   if (authStore.token) await gameStore.loadUser(authStore.token)
   if (!gameStore.character) {
     router.push({ name: 'profile' })
   }
-  console.log({ test: gameStore.character })
-  console.log({ test: gameStore.characterId })
   character.value = gameStore.character
   loading.value = false
 }

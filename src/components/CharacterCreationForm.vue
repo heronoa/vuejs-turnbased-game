@@ -42,7 +42,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 
 const name = ref('')
-const classHero = ref('Warrior')
+const classHero = ref('warrior')
 const classAttributes = ref(InitialAttributesByClass['warrior'])
 const authStore = useAuthStore()
 

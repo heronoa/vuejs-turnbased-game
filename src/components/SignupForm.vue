@@ -18,20 +18,21 @@
             <input v-if="showPassword === false" v-model="password" type="password" required
               class="w-full px-3 py-2 border rounded" />
             <input v-else v-model="password" type="text" required class="w-full px-3 py-2 border rounded" />
-            <div v-on:click="toggleShowPassword" class="absolute cursor-pointer right-3 top-[10px] bg-orange-500">
-              Eye
+            <div v-on:click="toggleShowPassword" class="absolute cursor-pointer right-3 top-[10px] hover:scale-110">
+              <img width="24" src="/src/assets/eye-svgrepo-com.svg" />
             </div>
           </div>
         </div>
         <div>
           <label class="block text-sm">Confirmar senha</label>
           <div class="relative">
-            <input v-if="showCPassword" v-model="passwordConfirmation" type="password" required
+            <input v-if="showCPassword === false" v-model="passwordConfirmation" type="password" required
               class="w-full px-3 py-2 border rounded relative" />
             <input v-else v-model="passwordConfirmation" type="text" required
               class="w-full px-3 py-2 border rounded relative" />
-            <div v-on:click="toggleShowCPassword" class="absolute cursor-pointer right-3 top-[10px] bg-orange-500">
-              Eye
+            <div v-on:click="toggleShowCPassword" class="absolute cursor-pointer right-3 top-[10px] hover:scale-110">
+              <img width="24" src="/src/assets/eye-svgrepo-com.svg" />
+
             </div>
           </div>
         </div>
@@ -41,9 +42,18 @@
       </form>
       <p class="text-center">
         Já tem uma conta?
-        <router-link to="/signup" class="text-blue-500">Faça o login</router-link>
+        <router-link to="/login" class="text-blue-500">Faça o login</router-link>
       </p>
     </div>
+    <div class="bg-amber-400 min-h-md absolute bottom-0 left-0 right-0 flex flex-col justify-center items-center">
+      <div>Feito por com objetivo educacional por <span class="text-slate-700 hover:text-fuchsia-600 cursor-pointer"
+          v-on:click="sendToGithub">Heron</span>.</div>
+      <div>Seu email cadastrado não será usado para nada
+        além de credencial e nem precisa ser um email
+        real, caso queira que seja excluído me mande um <a class="text-slate-700 hover:text-fuchsia-600 cursor-pointer"
+          href="mailto:heron.amaral@gmail.com">email</a>.</div>
+    </div>
+
   </div>
 </template>
 
@@ -62,6 +72,10 @@ const username = ref('')
 const router = useRouter()
 const authStore = useAuthStore()
 const errorMsg = ref<string | undefined>(undefined)
+
+const sendToGithub = () => {
+  router.push("https://github.com/heronoa")
+}
 
 const toggleShowCPassword = () => {
   showCPassword.value = !showCPassword.value

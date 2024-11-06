@@ -31,7 +31,7 @@ const router = useRouter()
 const clients = ref<any[]>([])
 const loading = ref(true)
 const load = async () => {
-  if (!authToken) {
+  if (!authToken || !authStore.isAuthenticated) {
     return router.push({ name: 'login' })
   }
 
@@ -44,7 +44,7 @@ const load = async () => {
     })
   if (gameStore?.character && authStore?.user?.username) {
     await colyseus.joinOrCreateLobby({
-      userId: `${authStore.user.username}@${authStore?.user?.email}`,
+      userId: `${authStore.user.username}@${authStore?.user?.id}`,
       character: {
         name: gameStore?.character.name,
         magicka: gameStore?.character.CharacterAttribute.magicka,

@@ -20,6 +20,15 @@
         <router-link to="/signup" class="text-blue-500">Cadastre-se</router-link>
       </p>
     </div>
+    <div class="bg-amber-400 min-h-md absolute bottom-0 left-0 right-0 flex flex-col justify-center items-center">
+      <div>Feito por com objetivo educacional por <span class="text-slate-700 hover:text-fuchsia-600 cursor-pointer"
+          v-on:click="sendToGithub">Heron</span>.</div>
+      <div>Seu email cadastrado não será usado para nada
+        além de credencial e nem precisa ser um email
+        real, caso queira que seja excluído me mande um <a class="text-slate-700 hover:text-fuchsia-600 cursor-pointer"
+          href="mailto:heron.amaral@gmail.com">email</a>.</div>
+    </div>
+
   </div>
 </template>
 
@@ -32,6 +41,12 @@ const email = ref('')
 const password = ref('')
 const router = useRouter()
 const authStore = useAuthStore()
+
+
+
+const sendToGithub = () => {
+  router.push("https://github.com/heronoa")
+}
 
 const onSubmit = async () => {
   const success = await authStore.login(email.value, password.value)

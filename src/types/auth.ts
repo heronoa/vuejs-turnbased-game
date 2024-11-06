@@ -25,6 +25,7 @@ export interface Skill {
   baseCost: number
   countdown: number
   channeling?: number
+  description?: string
 }
 
 export interface ICharacter {

@@ -39,8 +39,19 @@
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useGameStore } from '@/stores/game'
+import { onMounted } from 'vue';
 
 const authData = useAuthStore()
+
+
+const load = async () => {
+
+  if (!authStore.token || !authStore.isAuthenticated) {
+    return router.push({ name: 'login' })
+  }
+}
+
+onMounted(load)
 
 const user = authData.$state.user
 

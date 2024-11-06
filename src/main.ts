@@ -19,6 +19,7 @@ app.use(router)
 app.use(Vue3Toastify, {
   autoClose: 3000,
 } as ToastContainerOptions)
+
 const authStore = useAuthStore(pinia)
 const gameStore = useGameStore(pinia)
 useColyseusStore(pinia)
@@ -31,12 +32,12 @@ const initializeApp = async () => {
   router.beforeEach((to, from, next) => {
     if (to.path === '/') {
       if (authStore.isAuthenticated) {
-        next('/profile')
+        next({ name: 'profile' })
       } else {
-        next('/login')
+        next({ name: 'login' })
       }
     } else if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-      next('/login')
+      next({ name: 'login' })
     } else {
       next()
     }
