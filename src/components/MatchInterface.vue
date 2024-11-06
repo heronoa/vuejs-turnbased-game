@@ -33,7 +33,9 @@
                 <div v-for="(wins, index) in playerWins" :key="index" :value="wins"
                   class="w-[10px] h-[10px] bg-green-400"></div>
               </div>
-              <div class="w-[70px] h-[100px] bg-amber-600"></div>
+              <div class="relative z-1 w-[70px] h-[70px] bg-amber-600 rounded-full overflow-hidden ">
+                <img v-bind:src="`/src/assets/characters/${character?.heroClass || ' warrior'}.webp`" />
+              </div>
             </div>
           </div>
           <div>{{ player.userId.split('@')[0] }}</div>
@@ -69,7 +71,9 @@
                   class="w-[10px] h-[10px] bg-green-400"></div>
               </div>
               <div class="relative">
-                <div class="relative z-1 w-[70px] h-[100px] bg-amber-600"></div>
+                <div class="relative z-1 w-[70px] h-[70px] bg-amber-600 rounded-full overflow-hidden ">
+                  <img v-bind:src="`/src/assets/characters/${opponent?.heroClass || ' warrior'}.webp`" />
+                </div>
                 <!-- <div class="absolute z-2 inset-0 damage-animation-portrait">
                   <div class="relative damage-animation"></div>
                 </div> -->
@@ -127,11 +131,17 @@ const load = async () => {
   if (!authStore.token || !authStore.isAuthenticated) {
     return router.push({ name: 'login' })
   }
-  const reconnectionToken = localStorage.getItem("reconnectionToken")
+  // const reconnectionToken = localStorage.getItem("reconnectionToken")
 
-  if (reconnectionToken) {
-    colyseus.reconnectGame(reconnectionToken)
-  }
+  // if (reconnectionToken) {
+  //   try {
+
+  //     colyseus.reconnectGame(reconnectionToken)
+  //   } catch (err) {
+  //     localStorage.removeItem("reconnetionToken")
+  //     console.log("ERROR " + err)
+  //   }
+  // }
 
 }
 

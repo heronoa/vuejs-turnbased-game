@@ -17,6 +17,8 @@ export interface PlayerSchema extends Schema {
 
   userId: string
   connected: boolean
+
+  heroClass: string
   hp: number
   max_hp: number
   playerName: string
