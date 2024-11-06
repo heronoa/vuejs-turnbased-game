@@ -2,10 +2,11 @@
 import axios from 'axios'
 import { useAuthStore } from '../stores/auth'
 import router from '../router'
+import { toast } from 'vue3-toastify'
 
 // Crie uma instância do Axios com configurações padrão
 const api = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/api`, // Substitua pela URL da sua API
+  baseURL: `${import.meta.env.VITE_API_URL}`, // Substitua pela URL da sua API
   headers: {
     'Content-Type': 'application/json',
   },
@@ -30,6 +31,8 @@ api.interceptors.response.use(
   response => response,
   error => {
     if (error.response) {
+      console.log({ error }, JSON.stringify(error))
+      toast(`${error.response.status}`)
       // Por exemplo, se o token expirou ou é inválido
       if (error.response.status === 401) {
         const authStore = useAuthStore()

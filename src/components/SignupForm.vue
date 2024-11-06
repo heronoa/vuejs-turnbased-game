@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="flex items-center justify-center min-h-screen bg-gray-100 relative">
     <div class="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md">
       <h2 class="text-2xl font-bold text-center">Sign Up</h2>
       <div v-if="errorMsg" class="min-h-[25px]">{{ errorMsg }}</div>
@@ -45,10 +45,14 @@
         <router-link to="/login" class="text-blue-500">Faça o login</router-link>
       </p>
     </div>
-    <div class="bg-amber-400 min-h-md absolute bottom-0 left-0 right-0 flex flex-col justify-center items-center">
+    <div
+      class="bg-amber-400 min-h-md absolute bottom-0 left-0 right-0 py-2 md:py-0 text-center flex flex-col justify-center items-center">
       <div>Feito por com objetivo educacional por <span class="text-slate-700 hover:text-fuchsia-600 cursor-pointer"
           v-on:click="sendToGithub">Heron</span>.</div>
-      <div>Seu email cadastrado não será usado para nada
+      <div class="block md:hidden">Qualquer dúvida mande um <a
+          class="text-slate-700 hover:text-fuchsia-600 cursor-pointer" href="mailto:heron.amaral@gmail.com">email</a>.
+      </div>
+      <div class="hidden md:block">Seu email cadastrado não será usado para nada
         além de credencial e nem precisa ser um email
         real, caso queira que seja excluído me mande um <a class="text-slate-700 hover:text-fuchsia-600 cursor-pointer"
           href="mailto:heron.amaral@gmail.com">email</a>.</div>

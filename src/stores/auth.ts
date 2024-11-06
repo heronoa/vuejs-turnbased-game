@@ -27,7 +27,6 @@ export const useAuthStore = defineStore('auth', (): AuthState => {
   async function login(email: string, password: string) {
     try {
       const response = await api.post('/auth/login', { email, password })
-      console.log({ response })
       token.value = response.data.token
       isAuthenticated.value = true
       if (token.value) localStorage.setItem('token', token.value!)
