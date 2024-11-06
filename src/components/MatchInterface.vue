@@ -127,6 +127,12 @@ const load = async () => {
   if (!authStore.token || !authStore.isAuthenticated) {
     return router.push({ name: 'login' })
   }
+  const reconnectionToken = localStorage.getItem("reconnectionToken")
+
+  if (reconnectionToken) {
+    colyseus.reconnectGame(reconnectionToken)
+  }
+
 }
 
 onMounted(load)

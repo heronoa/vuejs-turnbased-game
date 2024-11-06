@@ -2,7 +2,10 @@
   <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md">
       <h2 class="text-2xl font-bold text-center">Dashboard</h2>
-      <div>
+      <div v-if="!character?.name" class="flex justify-center items-center">
+        <div class="loading-circle !border-b-indigo-700"></div>
+      </div>
+      <div v-if="character?.name">
         <div class="flex flex-col justify-center items-center">
           <label class="border-b border-solid border-gray-200 w-full text-center font-bold uppercase">
             {{ character?.name }} - {{ character?.heroClass }}

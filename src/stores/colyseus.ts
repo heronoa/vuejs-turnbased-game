@@ -39,6 +39,7 @@ export interface ColyseusState {
   leaveUnfinishedMatch: () => Promise<boolean>
   joinGameReservation: (reservation: any) => Promise<void>
   joinOrCreateLobby: (options?: ICharacterInitial) => Promise<void>
+  reconnectGame: (reservation: any) => Promise<void>
 }
 
 export const useColyseusStore = defineStore('colyseus', (): ColyseusState => {
@@ -58,6 +59,7 @@ export const useColyseusStore = defineStore('colyseus', (): ColyseusState => {
   const countdown = ref<any>(25)
   const roundWinners = ref<any>(null)
   const finalGameOverMsg = ref<any>(null)
+
   async function colyseusInit(authToken: string) {
     try {
       client.value = new Client(import.meta.env.VITE_SOCKET_URL)
@@ -74,6 +76,7 @@ export const useColyseusStore = defineStore('colyseus', (): ColyseusState => {
       return false
     }
   }
+
   async function send(actionType: string, msg?: any) {
     gameRoom.value?.send(actionType, msg || {})
   }
@@ -88,6 +91,7 @@ export const useColyseusStore = defineStore('colyseus', (): ColyseusState => {
       return false
     }
   }
+
   async function leaveMatch() {
     try {
       gameState.value = null
@@ -100,6 +104,7 @@ export const useColyseusStore = defineStore('colyseus', (): ColyseusState => {
       return false
     }
   }
+
   async function leaveUnfinishedMatch() {
     try {
       const result = gameRoom.value?.leave(true)
@@ -270,12 +275,165 @@ export const useColyseusStore = defineStore('colyseus', (): ColyseusState => {
           expiredAt,
         }),
       )
-
-      // setGameState(null);
-      // setWinner(null);
-      // setStage("selection");
     })
   }
+  async function reconnectGame(reservation: any) {
+    const room = await client.value
+      ?.reconnect(reservation)
+      ?.then((room: any): Colyseus.Room<any> => {
+        console.log(room.sessionId, 'joined', room.name)
+
+        clientsOnQueue.value = []
+
+        gameRoom.value = room
+
+        gameOverMsg.value = null
+        finalGameOverMsg.value = null
+
+        winner.value = null
+
+        msgLog.value = []
+
+        enemyMsg.value = null
+
+        userMsg.value = null
+
+        return room
+      })
+      .catch((e: any) => {
+        console.log('JOIN ERROR', e)
+        router.push({ name: 'profile' })
+      })
+
+    if (!room) {
+      console.log("couldn't join ", room)
+
+      return
+    }
+    if (room) {
+      const expiredAt = new Date(Date.now())
+      expiredAt.setSeconds(expiredAt.getSeconds() + 60)
+
+      localStorage.setItem(
+        'reconnectionToken',
+        JSON.stringify({
+          token: room.reconnectionToken,
+          expiredAt,
+        }),
+      )
+
+      userSessionId.value = room.sessionId
+    }
+
+    room.onStateChange((state: MyRoomState) => {
+      if (state?.winner) {
+        winner.value = state?.winner
+      }
+      if (state?.roundWinners) {
+        roundWinners.value = state?.roundWinners
+      }
+
+      if (state.countdown) {
+        countdown.value = state.countdown
+      }
+      if (state.currentRound) {
+        currentRound.value = state.currentRound
+      }
+      if (state.currentTurn) {
+        currentTurn.value = state.currentTurn
+      }
+
+      // console.log({
+      //   state: gameState.value,
+      // })
+      gameState.value = state
+    })
+
+    room.onMessage('Round Over', (messages: string) => {
+      console.log('Round Over', room.name, messages)
+      if (messages) {
+        msgLog.value = [...msgLog.value, messages]
+        gameOverMsg.value = messages
+        setTimeout(() => (gameOverMsg.value = null))
+      }
+    })
+
+    room.onMessage('Game Over', (messages: string) => {
+      console.log('Game Over', room.name, messages)
+      msgLog.value = [...msgLog.value, messages]
+      console.log('Game Over', messages, JSON.stringify(room.state))
+      if (messages) {
+        const drawSettings = messages?.includes(
+          'You won the match because your opponent was away.',
+        )
+          ? messages?.split(': ')
+          : []
+
+        const drawMessage =
+          drawSettings.length < 2
+            ? undefined
+            : drawSettings[0] === userSessionId.value
+              ? drawSettings[1]
+              : "You lost the match because you didn't take any action."
+        finalGameOverMsg.value = drawMessage || messages
+      }
+      localStorage.removeItem('reconnectionToken')
+    })
+
+    // room.state?.listen("currentRound", (value, prevValue) => {
+    //   if (prevValue !== value) {
+    //     toast("New Round");
+    //   }
+    // });
+    // room.state?.listen("currentTurn", (value, prevValue) => {
+    //   toast("New Turn");
+    // });
+
+    room.onMessage(
+      'action',
+      (messages: { playerMsg: string; opponentMsg: string }) => {
+        const { playerMsg = '', opponentMsg = '' } = messages
+
+        msgLog.value = [...msgLog.value, opponentMsg, playerMsg].filter(e =>
+          Boolean(e),
+        )
+
+        userMsg.value = playerMsg
+
+        enemyMsg.value = opponentMsg
+      },
+    )
+    room.onMessage('chat', (messages: string) => {
+      msgLog.value = [...msgLog.value, messages]
+    })
+
+    room.onMessage('warn', (messages: string) => {
+      console.log(messages)
+      toast(messages, {
+        autoClose: 1000,
+      })
+    })
+
+    room.onError((code: number) => {
+      console.log("couldn't join", room.name, 'code: ', code)
+    })
+
+    room.onLeave((code: number) => {
+      const expiredAt = new Date(Date.now())
+      expiredAt.setSeconds(expiredAt.getSeconds() + 600)
+
+      console.log({ reconnectionToken: room.reconnectionToken })
+
+      localStorage.setItem(
+        'reconnectionToken',
+        JSON.stringify({
+          token: room.reconnectionToken,
+          expiredAt,
+        }),
+      )
+    })
+  }
+
   async function joinOrCreateLobby(options?: ICharacterInitial) {
     const room = await client.value
       ?.joinOrCreate('lobby_room', options)
@@ -355,5 +513,6 @@ export const useColyseusStore = defineStore('colyseus', (): ColyseusState => {
     leaveUnfinishedMatch,
     joinGameReservation,
     joinOrCreateLobby,
+    reconnectGame,
   }
 })
