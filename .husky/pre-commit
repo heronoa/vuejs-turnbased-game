@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+
+#run lint
+npx lint-staged
+
+#run cypress e2e test
+
+# pnpm test:e2e:dev
