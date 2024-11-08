@@ -34,7 +34,7 @@
                   class="w-[10px] h-[10px] bg-green-400"></div>
               </div>
               <div class="relative z-1 w-[70px] h-[70px] bg-amber-600 rounded-full overflow-hidden ">
-                <img v-bind:src="`/src/assets/characters/${character?.heroClass || ' warrior'}.webp`" />
+                <img :image="characterImage?.[player?.heroClass as 'warrior' | 'mage' | 'scout']" />
               </div>
             </div>
           </div>
@@ -72,7 +72,7 @@
               </div>
               <div class="relative">
                 <div class="relative z-1 w-[70px] h-[70px] bg-amber-600 rounded-full overflow-hidden ">
-                  <img v-bind:src="`/src/assets/characters/${opponent?.heroClass || ' warrior'}.webp`" />
+                  <img :image="characterImage?.[opponent?.heroClass as 'warrior' | 'mage' | 'scout']" />
                 </div>
                 <!-- <div class="absolute z-2 inset-0 damage-animation-portrait">
                   <div class="relative damage-animation"></div>
@@ -119,6 +119,16 @@ import { useAuthStore } from '../stores/auth'
 import { useGameStore } from '@/stores/game'
 import { useColyseusStore } from '@/stores/colyseus'
 import type { Skill } from '@/types/auth'
+
+import WarriorImage from "@/assets/characters/warrior.webp"
+import MageImage from "@/assets/characters/mage.webp"
+import ScoutImage from "@/assets/characters/scout.webp"
+
+const characterImage = {
+  warrior: WarriorImage,
+  mage: MageImage,
+  scout: ScoutImage,
+}
 
 const colyseus = useColyseusStore()
 const router = useRouter()

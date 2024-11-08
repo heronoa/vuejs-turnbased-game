@@ -19,7 +19,7 @@
               class="w-full px-3 py-2 border rounded" />
             <input v-else v-model="password" type="text" required class="w-full px-3 py-2 border rounded" />
             <div v-on:click="toggleShowPassword" class="absolute cursor-pointer right-3 top-[10px] hover:scale-110">
-              <img width="24" src="/src/assets/eye-svgrepo-com.svg" />
+              <img width="24" :image="EyeImage" />
             </div>
           </div>
         </div>
@@ -31,7 +31,7 @@
             <input v-else v-model="passwordConfirmation" type="text" required
               class="w-full px-3 py-2 border rounded relative" />
             <div v-on:click="toggleShowCPassword" class="absolute cursor-pointer right-3 top-[10px] hover:scale-110">
-              <img width="24" src="/src/assets/eye-svgrepo-com.svg" />
+              <img width="24" :image="EyeImage" />
 
             </div>
           </div>
@@ -66,6 +66,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { signUpFieldsChecks } from '@/errorHandlers/signUpHandlers'
+import EyeImage from '/src/assets/eye-svgrepo-com.svg'
 
 const email = ref('')
 const password = ref('')

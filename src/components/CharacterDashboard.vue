@@ -8,7 +8,7 @@
       <div v-if="character?.name">
         <div class="flex flex-col justify-center items-center">
           <div class="relative z-1 w-[70px] h-[70px] bg-amber-600 rounded-full overflow-hidden ">
-            <img v-bind:src="`/src/assets/characters/${character?.heroClass || ' warrior'}.webp`" />
+            <img :image="characterImage?.[character?.heroClass as 'warrior' | 'mage' | 'scout']" />
           </div>
           <label class="border-b border-solid border-gray-200 w-full text-center font-bold uppercase">
             {{ character?.name }} - {{ character?.heroClass }}
@@ -71,6 +71,15 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useGameStore } from '@/stores/game'
 import type { ICharacter } from '@/types/auth'
+import WarriorImage from "@/assets/characters/warrior.webp"
+import MageImage from "@/assets/characters/mage.webp"
+import ScoutImage from "@/assets/characters/scout.webp"
+
+const characterImage = {
+  warrior: WarriorImage,
+  mage: MageImage,
+  scout: ScoutImage,
+}
 
 const authStore = useAuthStore()
 const gameStore = useGameStore()
