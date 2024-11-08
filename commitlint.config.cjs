@@ -15,12 +15,12 @@ module.exports = {
         }
         if (
           !parsed.header.match(
-            /^((feat)|(test)|(build)|(chore)|(ci)|(docs)|(fix)|(perf)|(refactor)|(style))\(((evv-\d{1,4})|(EVV-\d{1,4}))\):/gm,
+            /^((feat)|(test)|(build)|(chore)|(ci)|(docs)|(fix)|(perf)|(refactor)|(style))(\([^)]+\))?:/gm,
           )
         ) {
           return [
             false,
-            `the scope must follow the pattern Ticket = "fix(evv-153):commit example"`,
+            `the scope must follow the pattern Ticket = "fix(optional):commit example"`,
           ]
         }
         return [true]
