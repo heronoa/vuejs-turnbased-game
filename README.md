@@ -20,7 +20,7 @@ O backend foi desenvolvido por mim utilizando as seguintes tecnologias:
 
 ## Funcionalidades
 
-- **Autenticação**: Crie uma conta e faça login para acessar o jogo.
+- **Autenticação**: Crie uma conta e faça login para acessar o jogo. (Garanto que seu email não será usado para nada além de autenticar o login e nem precisa ser um email real, não há confirmação)
 - **Criação de Personagens**: Escolha entre três classes de personagens - Warrior, Mage e Scout.
 - **Fila de Matchmaking**: Encontre um oponente em até 15 segundos; caso contrário, jogue contra um oponente controlado pela IA.
 - **Sistema de Batalha em Turnos**: Participe de batalhas estratégicas contra outros jogadores ou contra a IA.
