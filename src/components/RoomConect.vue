@@ -47,6 +47,7 @@ const load = async () => {
       userId: `${authStore.user.username}@${authStore?.user?.id}`,
       character: {
         name: gameStore?.character.name,
+        heroClass: gameStore?.character.heroClass,
         magicka: gameStore?.character.CharacterAttribute.magicka,
         dexterity: gameStore?.character.CharacterAttribute.dexterity,
         intelligence: gameStore?.character.CharacterAttribute.intelligence,

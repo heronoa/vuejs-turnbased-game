@@ -34,7 +34,8 @@
                   class="w-[10px] h-[10px] bg-green-400"></div>
               </div>
               <div class="relative z-1 w-[70px] h-[70px] bg-amber-600 rounded-full overflow-hidden ">
-                <img class="w-full h-full" :src="characterImage?.[player?.heroClass as 'warrior' | 'mage' | 'scout']" />
+                <img class="w-full h-full"
+                  :src="characterImage?.[character?.heroClass as 'warrior' | 'mage' | 'scout']" />
               </div>
             </div>
           </div>

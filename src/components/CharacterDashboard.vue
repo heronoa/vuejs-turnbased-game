@@ -71,7 +71,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useGameStore } from '@/stores/game'
 import type { ICharacter } from '@/types/auth'
-import WarriorImage from "../assets/characters/mage.webp"
+import WarriorImage from "../assets/characters/warrior.webp"
 import MageImage from "../assets/characters/mage.webp"
 import ScoutImage from "../assets/characters/scout.webp"
 

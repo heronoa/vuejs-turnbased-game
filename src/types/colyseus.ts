@@ -74,6 +74,7 @@ export interface MyRoomState extends Schema {
 export interface ICharacterInitial {
   userId: string
   character: {
+    heroClass: string
     name: string
     magicka: number
     dexterity: number
