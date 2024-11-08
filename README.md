@@ -62,7 +62,7 @@ Certifique-se de ter **Node.js** e gerenciador de pacotes node de preferência *
 5. Inicie o servidor de desenvolvimento:
 
    ```bash
-   pnpm run dev
+   pnpm dev
 
    ```
 
@@ -73,6 +73,8 @@ Certifique-se de ter **Node.js** e gerenciador de pacotes node de preferência *
 - **src/**: Diretório principal do código fonte.
   - **assets/**: Arquivos estáticos, como imagens, fontes, etc.
   - **components/**: Componentes Vue reutilizáveis.
+  - **errorHandlers/**: Funções e módulos para tratamento de erros.
+    - **signUpHandlers.ts**: Módulo específico para tratamento de erros relacionados ao cadastro de usuários.
   - **router/**: Configuração das rotas do Vue Router.
     - **index.ts**: Arquivo principal para configuração das rotas.
   - **services/**: Serviços para interação com o backend.
