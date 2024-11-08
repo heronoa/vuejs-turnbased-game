@@ -91,7 +91,7 @@ Certifique-se de ter **Node.js** e gerenciador de pacotes node de preferência *
 
 Sinta-se à vontade para enviar issues e pull requests! Fique atento ao husky que só permite commits que obedeçam a essa estrutura:
 
-````bash
+```bash
   "feat(opcional): meu commit de uma nova feature"
   "chore(opcional): meu commit de configuração"
   "fix(opcional): meu commit de correção"
@@ -101,4 +101,3 @@ Sinta-se à vontade para enviar issues e pull requests! Fique atento ao husky qu
 ## Licença
 
 Este projeto é licenciado sob a licença MIT. Consulte o arquivo LICENSE para mais informações.
-````
