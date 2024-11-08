@@ -1,61 +1,87 @@
-# knighthood-pvp
+# Jogo Multiplayer de Turno
 
-This template should help get you started developing with Vue 3 in Vite.
+Bem-vindo ao projeto de Jogo Multiplayer de Turno desenvolvido em Vue 3! Este é um jogo online onde jogadores podem criar personagens, fazer login, e lutar contra outros jogadores em batalhas de turno. Caso o sistema não encontre um oponente em até 15 segundos, o jogador enfrentará um oponente controlado pelo sistema.
 
-## Recommended IDE Setup
+## Tecnologias Utilizadas
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+### Frontend
 
-## Type Support for `.vue` Imports in TS
+- **Vue 3**: Framework principal do front-end.
+- **Pinia**: Biblioteca de gerenciamento de estado para Vue 3.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+### Backend
 
-## Customize configuration
+O backend foi desenvolvido por mim utilizando as seguintes tecnologias:
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- **Node.js**
+- **Colyseus.js**: Biblioteca para criação de jogos multiplayer em tempo real.
+- **Express**: Framework para criar APIs e gerenciar as rotas.
+- **MongoDB**: Banco de dados para armazenamento de informações de usuários, personagens e progresso.
 
-## Project Setup
+## Funcionalidades
 
-```sh
-pnpm install
-```
+- **Autenticação**: Crie uma conta e faça login para acessar o jogo.
+- **Criação de Personagens**: Escolha entre três classes de personagens - Warrior, Mage e Scout.
+- **Fila de Matchmaking**: Encontre um oponente em até 15 segundos; caso contrário, jogue contra um oponente controlado pela IA.
+- **Sistema de Batalha em Turnos**: Participe de batalhas estratégicas contra outros jogadores ou contra a IA.
 
-### Compile and Hot-Reload for Development
+## Instalação
 
-```sh
-pnpm dev
-```
+### Pré-requisitos
 
-### Type-Check, Compile and Minify for Production
+Certifique-se de ter **Node.js** e gerenciador de pacotes node de preferência **pnpm** mas pode ser **npm** instalados em seu sistema.
 
-```sh
-pnpm build
-```
+### Passo a Passo
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+1. Clone o repositório:
 
-```sh
-pnpm test:unit
-```
+   ```bash
+   git clone https://github.com/seu-usuario/jogo-multiplayer-turno.git
+   ```
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+2. Navegue para o diretório do projeto::
 
-```sh
-pnpm test:e2e:dev
-```
+   ```bash
+   cd vuejs-turnbased-game
+   ```
 
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
+3. Instale as dependências:
 
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
+   ```bash
+   pnpm install
 
-```sh
-pnpm build
-pnpm test:e2e
-```
+   ```
 
-### Lint with [ESLint](https://eslint.org/)
+4. Inicie o servidor de desenvolvimento:
 
-```sh
-pnpm lint
-```
+   ```bash
+   pnpm run dev
+
+   ```
+
+5. Abra o navegador e acesse <http://localhost:5173>.
+
+## Estrutura do Projeto
+
+- **src/**: Diretório principal do código fonte.
+  - **assets/**: Arquivos estáticos, como imagens, fontes, etc.
+  - **components/**: Componentes Vue reutilizáveis.
+  - **router/**: Configuração das rotas do Vue Router.
+    - **index.ts**: Arquivo principal para configuração das rotas.
+  - **services/**: Serviços para interação com o backend.
+    - **api.ts**: Configurações e funções para chamadas de API.
+  - **stores/**: Diretório de armazenamento de estado usando Pinia.
+    - **auth.ts**: Gerenciamento de estado para autenticação de usuários.
+    - **colyseus.ts**: Estado relacionado ao Colyseus, para gerenciamento de sessões de jogo.
+    - **game.ts**: Estado principal do jogo, incluindo lógica de batalha e status dos personagens.
+  - **types/**: Tipos TypeScript utilizados em várias partes do projeto.
+  - **utils/**: Funções utilitárias para uso geral.
+  - **views/**: Páginas principais do jogo, como login, criação de personagem, tela de batalha, etc.
+
+## Contribuindo
+
+Sinta-se à vontade para enviar issues e pull requests!
+
+## Licença
+
+Este projeto é licenciado sob a licença MIT. Consulte o arquivo LICENSE para mais informações.
