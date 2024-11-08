@@ -52,14 +52,21 @@ Certifique-se de ter **Node.js** e gerenciador de pacotes node de preferência *
 
    ```
 
-4. Inicie o servidor de desenvolvimento:
+4. Rode os teste e2e com cypres (Opcional):
+
+   ```bash
+   pnpm test:e2e:dev
+
+   ```
+
+5. Inicie o servidor de desenvolvimento:
 
    ```bash
    pnpm run dev
 
    ```
 
-5. Abra o navegador e acesse <http://localhost:5173>.
+6. Abra o navegador e acesse <http://localhost:5173>.
 
 ## Estrutura do Projeto
 
