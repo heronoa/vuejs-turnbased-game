@@ -34,7 +34,7 @@
                   class="w-[10px] h-[10px] bg-green-400"></div>
               </div>
               <div class="relative z-1 w-[70px] h-[70px] bg-amber-600 rounded-full overflow-hidden ">
-                <img :image="characterImage?.[player?.heroClass as 'warrior' | 'mage' | 'scout']" />
+                <img class="w-full h-full" :src="characterImage?.[player?.heroClass as 'warrior' | 'mage' | 'scout']" />
               </div>
             </div>
           </div>
@@ -72,7 +72,8 @@
               </div>
               <div class="relative">
                 <div class="relative z-1 w-[70px] h-[70px] bg-amber-600 rounded-full overflow-hidden ">
-                  <img :image="characterImage?.[opponent?.heroClass as 'warrior' | 'mage' | 'scout']" />
+                  <img class="w-full h-full"
+                    :src="characterImage?.[opponent?.heroClass as 'warrior' | 'mage' | 'scout']" />
                 </div>
                 <!-- <div class="absolute z-2 inset-0 damage-animation-portrait">
                   <div class="relative damage-animation"></div>
