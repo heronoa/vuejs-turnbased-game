@@ -1,6 +1,6 @@
 # Jogo Multiplayer de Turno
 
-Bem-vindo ao projeto de Jogo Multiplayer de Turno desenvolvido em Vue 3! Este é um jogo online onde jogadores podem criar personagens, fazer login, e lutar contra outros jogadores em batalhas de turno. Caso o sistema não encontre um oponente em até 15 segundos, o jogador enfrentará um oponente controlado pelo sistema.
+Bem-vindo ao projeto com fins educacionais de Jogo Multiplayer de Turno desenvolvido em Vue 3! Este é um jogo online onde jogadores podem criar personagens, fazer login, e lutar contra outros jogadores em batalhas de turno. Caso o sistema não encontre um oponente em até 15 segundos, o jogador enfrentará um oponente controlado pelo sistema.
 
 ## Tecnologias Utilizadas
 
