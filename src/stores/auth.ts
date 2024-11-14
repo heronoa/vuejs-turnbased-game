@@ -7,6 +7,7 @@ export interface AuthState {
   isAuthenticated: Ref<boolean>
   token: Ref<string | null>
   user: Ref<IUser | null>
+  loginError: Ref<string | null>
   loading: Ref<boolean>
   login: (email: string, password: string) => Promise<boolean>
   signup: (
@@ -24,6 +25,7 @@ export const useAuthStore = defineStore('auth', (): AuthState => {
   const token = ref(localStorage.getItem('token') || null)
   const user = ref(null)
   const loading = ref(false)
+  const loginError = ref<string | null>(null)
   async function login(email: string, password: string) {
     try {
       const response = await api.post('/auth/login', { email, password })
@@ -33,7 +35,15 @@ export const useAuthStore = defineStore('auth', (): AuthState => {
       user.value = response.data.user
       return true
     } catch (error) {
-      console.log(error)
+      loginError.value =
+        (error as { response?: { data?: { error?: string } } })?.response?.data
+          ?.error ?? 'Unknown error'
+      console.log(error, JSON.stringify(error))
+
+      setTimeout(() => {
+        loginError.value = null
+      }, 2000)
+
       return false
     }
   }
@@ -82,10 +92,10 @@ export const useAuthStore = defineStore('auth', (): AuthState => {
   }
 
   function logout() {
+    localStorage.removeItem('token')
     isAuthenticated.value = false
     token.value = null
     user.value = null
-    localStorage.removeItem('token')
   }
   async function loadUser() {
     if (token.value) {
@@ -105,6 +115,8 @@ export const useAuthStore = defineStore('auth', (): AuthState => {
         console.log('erro no loadUser', error)
         logout()
       }
+    } else {
+      logout()
     }
     loading.value = false
   }
@@ -114,6 +126,7 @@ export const useAuthStore = defineStore('auth', (): AuthState => {
     token,
     user,
     loading,
+    loginError,
     login,
     signup,
     createCharacter,
