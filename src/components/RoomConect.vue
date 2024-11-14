@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watchEffect } from 'vue'
+import { onMounted, ref, watch, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useGameStore } from '@/stores/game'
@@ -27,8 +27,14 @@ const gameStore = useGameStore()
 const authToken = authStore.token
 const router = useRouter()
 // const character = ref<ICharacter | undefined | null>()
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const clients = ref<any[]>([])
+
+const clients = ref(colyseus.clientsOnQueue)
+watch(
+  () => colyseus.clientsOnQueue,
+  (newVal) => {
+    clients.value = newVal
+  }
+)
 const loading = ref(true)
 const load = async () => {
   if (!authToken || !authStore.isAuthenticated) {
@@ -44,7 +50,7 @@ const load = async () => {
     })
   if (gameStore?.character && authStore?.user?.username) {
     await colyseus.joinOrCreateLobby({
-      userId: `${authStore.user.username}@${authStore?.user?.id}`,
+      userId: `${authStore.user.username}@${gameStore?.character?.name}`,
       character: {
         name: gameStore?.character.name,
         heroClass: gameStore?.character.heroClass,
@@ -69,10 +75,6 @@ const leave = async () => {
 
   if (success) router.push({ name: 'Character Dashboard' })
 }
-
-watchEffect(() => {
-  clients.value = colyseus.clientsOnQueue
-})
 
 watchEffect(() => {
   const matchRoom = colyseus.gameRoom

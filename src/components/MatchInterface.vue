@@ -115,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useGameStore } from '@/stores/game'
@@ -196,28 +196,36 @@ const finalGameOverMsg = computed(() => {
 })
 
 const player = computed(() => {
-  if (gameState.value && colyseus.userSessionId) {
-    return gameState.value.players.get(colyseus.userSessionId)
-  }
-  return null
-})
-
-
+  return colyseus.userSessionId ? gameState.value?.players.get(colyseus.userSessionId) || null : null;
+});
 
 const opponent = computed(() => {
-  if (gameState.value && colyseus.userSessionId) {
-    const opponentKey = Array.from(gameState.value.players.keys()).find(
-      v => v !== colyseus.userSessionId,
-    )
+  if (!gameState.value) return null;
 
+  const opponentKey = Array.from(gameState.value.players.keys()).find(
+    v => v !== colyseus.userSessionId,
+  );
 
-    if (opponentKey)
-      return gameState.value.players.get(opponentKey)
-
-    return null
+  if (opponentKey) {
+    const op = gameState.value.players.get(opponentKey);
+    console.log({ op });
+    return op;
   }
-  return null
-})
+
+  return null;
+});
+
+watch(player, (newVal, oldVal) => {
+  console.log('Player changed:', { oldVal, newVal });
+});
+
+watch(opponent, (newVal, oldVal) => {
+  console.log('Opponent changed:', { oldVal, newVal });
+});
+
+// crie algo para ficar monitorando as variaveis de player e opponent com console log
+// e veja se elas estão sendo atualizadas
+
 
 const playerWins = computed(() => {
   // const roundWinners = gameState?.value?.roundWinners
