@@ -71,8 +71,6 @@ const toggleShowPassword = () => {
   showPassword.value = !showPassword.value
 }
 
-
-
 const sendToGithub = () => {
   router.push('https://github.com/heronoa')
 }

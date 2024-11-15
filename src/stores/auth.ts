@@ -39,7 +39,6 @@ export const useAuthStore = defineStore('auth', (): AuthState => {
       loginError.value =
         (error as { response?: { data?: { error?: string } } })?.response?.data
           ?.error ?? 'Unknown error'
-      console.log(error, JSON.stringify(error))
 
       setTimeout(() => {
         loginError.value = null
@@ -61,6 +60,9 @@ export const useAuthStore = defineStore('auth', (): AuthState => {
       user.value = response.data.user
       return true
     } catch (error) {
+      loginError.value =
+        (error as { response?: { data?: { error?: string } } })?.response?.data
+          ?.error ?? 'Unknown error'
       console.log(error)
       return false
     }

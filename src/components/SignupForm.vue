@@ -109,7 +109,7 @@ const onSubmit = async () => {
   )
   if (success) router.push({ name: 'login' })
   else {
-    errorMsg.value = 'Error on sign'
+    errorMsg.value = authStore?.loginError || 'Error on sign'
     setTimeout(() => {
       errorMsg.value = undefined
     }, 2000)
