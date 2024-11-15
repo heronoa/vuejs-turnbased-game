@@ -115,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useGameStore } from '@/stores/game'
@@ -208,20 +208,19 @@ const opponent = computed(() => {
 
   if (opponentKey) {
     const op = gameState.value.players.get(opponentKey);
-    console.log({ op });
     return op;
   }
 
   return null;
 });
 
-watch(player, (newVal, oldVal) => {
-  console.log('Player changed:', { oldVal, newVal });
-});
+// watch(player, (newVal, oldVal) => {
+//   console.log('Player changed:', { oldVal, newVal });
+// });
 
-watch(opponent, (newVal, oldVal) => {
-  console.log('Opponent changed:', { oldVal, newVal });
-});
+// watch(opponent, (newVal, oldVal) => {
+//   console.log('Opponent changed:', { oldVal, newVal });
+// });
 
 // crie algo para ficar monitorando as variaveis de player e opponent com console log
 // e veja se elas estão sendo atualizadas

@@ -8,14 +8,15 @@
       <form @submit.prevent="onSubmit">
         <div>
           <label class="block text-sm">Email</label>
-          <input v-model="email" type="email" required class="w-full px-3 py-2 border rounded" />
+          <input v-model="email" type="email" name="email" required class="w-full px-3 py-2 border rounded" />
         </div>
         <div>
           <label class="block text-sm">Senha</label>
           <div class="relative">
-            <input v-if="showPassword === false" v-model="password" type="password" required
+            <input v-if="showPassword === false" v-model="password" type="password" name="password" required
               class="w-full px-3 py-2 border rounded" />
-            <input v-else v-model="password" type="text" required class="w-full px-3 py-2 border rounded" />
+            <input v-else v-model="password" type="text" name="password" required
+              class="w-full px-3 py-2 border rounded" />
             <div v-on:click="toggleShowPassword" class="absolute cursor-pointer right-3 top-[10px] hover:scale-110">
               <img width="24" :src="EyeImage" />
             </div>
@@ -27,7 +28,7 @@
       </form>
       <p class="text-center">
         Não tem uma conta?
-        <router-link to="/signup" class="text-blue-500">Cadastre-se</router-link>
+        <RouterLink id="signup-link" to="/signup" class="text-blue-500">Cadastre-se</RouterLink>
       </p>
     </div>
     <div

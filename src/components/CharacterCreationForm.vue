@@ -61,7 +61,6 @@ const onSubmit = async () => {
     classHero.value,
   )
 
-  console.log({ success })
 
   if (success) {
     try {

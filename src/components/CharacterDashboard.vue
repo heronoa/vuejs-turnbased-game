@@ -108,7 +108,6 @@ const changeHero = () => {
 
 const findBattle = () => {
   router.push({ name: 'Game Queue' })
-  console.log('findBattle')
 }
 
 // const router = useRouter()

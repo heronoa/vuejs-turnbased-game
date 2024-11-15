@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import api from '../services/api'
 import type { IUser } from '@/types/auth'
 import { ref, type Ref } from 'vue'
+import router from '@/router'
 
 export interface AuthState {
   isAuthenticated: Ref<boolean>
@@ -96,6 +97,7 @@ export const useAuthStore = defineStore('auth', (): AuthState => {
     isAuthenticated.value = false
     token.value = null
     user.value = null
+    router.push('/login')
   }
   async function loadUser() {
     if (token.value) {
